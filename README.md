@@ -10,20 +10,26 @@ Standalone Astro project (not the `incrementality-amc` monorepo). Product spec a
 
 ## Push to your GitHub
 
-1. On GitHub: **New repository** (e.g. `china-traveler-guide`), empty, no README/license if you already have files locally.  
-2. In this folder:
+**Important:** The remote URL must be your **real** GitHub username and **exact** repository name (as shown on the repo’s GitHub page). Placeholder text like `你的用户名` or `YOUR_USERNAME` will **not** work — GitHub will return “repository not found”.
+
+1. In the browser: create the repo first — **GitHub → New repository** → name it (e.g. `china-traveler-guide`) → create **without** adding a README if you already committed locally.  
+2. Copy the HTTPS URL from the green **Code** button (looks like `https://github.com/someuser/china-traveler-guide.git`).  
+3. In PowerShell (skip `git init` / `commit` if you already did them):
 
 ```powershell
 cd "c:\Users\RandallGao\OneDrive - Pacvue\Documents\GitHub\china-traveler-guide"
-git init
-git add .
-git commit -m "chore: initial import — China visitor guide (Astro scaffold + docs)"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+git remote remove origin 2>$null   # only if you added a wrong URL earlier
+git remote add origin https://github.com/ACTUAL_LOGIN/ACTUAL_REPO_NAME.git
+git remote -v
 git push -u origin main
 ```
 
-Replace `YOUR_USERNAME/YOUR_REPO` with your account and repo name. Use a [Personal Access Token](https://github.com/settings/tokens) as the password if Git asks for credentials over HTTPS.
+Example: if your profile is `https://github.com/janesmith` and the repo is `china-traveler-guide`, use:
+
+`https://github.com/janesmith/china-traveler-guide.git`
+
+HTTPS password prompt: use a [Personal Access Token](https://github.com/settings/tokens) (classic, scope `repo`), not your GitHub account password.
 
 ## Decisions
 
