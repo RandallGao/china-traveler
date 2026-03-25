@@ -14,7 +14,7 @@ The guide stays **neutral** between Alipay and WeChat Pay — pick **one** to co
 
 ## Step by step
 
-1. **Install the app you chose first** (Alipay or WeChat) from an **official app store** listing. Sign in with a method you can still access abroad (phone number, email, etc.).
+1. **Install the app you chose first** (Alipay or WeChat) from your phone’s **official store listing** — use **[Alipay on the App Store (iOS)](https://apps.apple.com/app/alipay-simplify-your-life/id333206289)** or **[Alipay on Google Play (Android)](https://play.google.com/store/apps/details?id=com.eg.android.AlipayGphone&hl=en)**; **[WeChat on the App Store](https://apps.apple.com/app/wechat/id414478124)** or **[WeChat on Google Play](https://play.google.com/store/apps/details?id=com.tencent.mm&hl=en)**. (On Android without Google Play, open your manufacturer’s store and install the same apps from **Alipay (Hangzhou) Technology** and **Tencent**.) Sign in with a method you can still access abroad (phone number, email, etc.).
 2. **Start the real-name / wallet setup flow inside the app.** Screens and required documents **change often** — follow what the app asks for *today*, not blog screenshots. Foreign cards and passport flows vary by country and issuer.
 3. **Link a funding source** the app accepts (foreign card, linked account, or top-up path). If a card is declined, try your **bank’s travel notice** and **3-D Secure / SMS** delivery before assuming the app is broken.
 4. **Complete any security step** the app requires (SMS, face scan, PIN). If SMS does not arrive, you may need **roaming**, **local data**, or **Wi‑Fi + alternate verification** — see [Connectivity](../connectivity/).
@@ -36,6 +36,13 @@ Pay with **card or cash** for the immediate need, then retry on **stable Wi‑Fi
 
 ## Official / trusted links
 
-- [Alipay — global site](https://global.alipay.com/)
+**Install the apps (opens your phone’s store in the browser, then install on device):**
+
+- **Alipay:** [App Store (iOS)](https://apps.apple.com/app/alipay-simplify-your-life/id333206289) · [Google Play (Android)](https://play.google.com/store/apps/details?id=com.eg.android.AlipayGphone&hl=en)
+- **WeChat** *(WeChat Pay is inside this app):* [App Store (iOS)](https://apps.apple.com/app/wechat/id414478124) · [Google Play (Android)](https://play.google.com/store/apps/details?id=com.tencent.mm&hl=en)
+
+**Background / help (not app installers):**
+
+- [Alipay+ / global site](https://global.alipay.com/)
 - [WeChat Pay — English overview](https://pay.weixin.qq.com/index.php/public/wechatpay_en)
 - [UnionPay International — English](https://www.unionpayintl.com/en/) (card-network context — not a substitute for in-app help)
