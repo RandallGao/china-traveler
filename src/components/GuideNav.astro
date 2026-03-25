@@ -1,0 +1,95 @@
+---
+interface Props {
+  /** Use Astro.url.pathname so `base` matches highlight state */
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+const base = import.meta.env.BASE_URL;
+
+const sections: { slug: string; label: string; secondary?: boolean }[] = [
+  { slug: "before-land/", label: "Before you land" },
+  { slug: "payments/", label: "Payments" },
+  { slug: "transport/", label: "Transport" },
+  { slug: "rail/", label: "Rail" },
+  { slug: "connectivity/", label: "Connectivity" },
+  { slug: "appendix-tickets/", label: "Appendix: Tickets & events", secondary: true },
+];
+
+const homeHref = base;
+const normalized = (p: string) => p.replace(/\/$/, "") || "/";
+const isHome =
+  normalized(currentPath) === normalized(homeHref) ||
+  normalized(currentPath) === `${normalized(homeHref)}/index`;
+---
+
+<nav class="guide-nav" aria-label="Guide sections">
+  <p class="guide-nav-title">
+    <a href={homeHref} aria-current={isHome ? "page" : undefined}>China guide — Shanghai first</a>
+  </p>
+  <ol class="guide-nav-list">
+    {
+      sections.map(({ slug, label, secondary }) => {
+        const href = `${base}${slug}`;
+        const active = normalized(currentPath) === normalized(href);
+        return (
+          <li class:list={{ "nav-secondary": secondary, "is-current": active }}>
+            <a href={href} aria-current={active ? "page" : undefined}>
+              {label}
+            </a>
+          </li>
+        );
+      })
+    }
+  </ol>
+</nav>
+<style>
+  .guide-nav {
+    border-bottom: 1px solid var(--border, #e2ddd4);
+    padding: 0.75rem 1.25rem 1rem;
+    background: #fff;
+  }
+  .guide-nav-title {
+    margin: 0 0 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+  .guide-nav-title a {
+    color: var(--accent, #0b5cab);
+    text-decoration: none;
+  }
+  .guide-nav-title a:hover {
+    text-decoration: underline;
+  }
+  .guide-nav-list {
+    margin: 0;
+    padding-left: 1.1rem;
+    font-size: 0.9rem;
+  }
+  .guide-nav-list li {
+    margin-bottom: 0.25rem;
+  }
+  .guide-nav-list a {
+    color: var(--text, #1a1a1a);
+    text-decoration: none;
+  }
+  .guide-nav-list a:hover {
+    text-decoration: underline;
+  }
+  .guide-nav-list .is-current a {
+    font-weight: 600;
+    color: var(--accent, #0b5cab);
+  }
+  .nav-secondary {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed var(--border, #e2ddd4);
+    list-style: none;
+    margin-left: -1.1rem;
+    font-size: 0.85rem;
+    color: var(--nav-secondary, #6b6b6b);
+  }
+  .nav-secondary a {
+    color: var(--nav-secondary, #6b6b6b);
+  }
+</style>

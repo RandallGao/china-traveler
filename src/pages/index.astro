@@ -1,21 +1,25 @@
 ---
-// Hub placeholder — chapter-per-page routes added in follow-up tasks (see docs/URL-STRATEGY.md).
+import BaseLayout from "../layouts/BaseLayout.astro";
+import GuideNav from "../components/GuideNav.astro";
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Practical guide for first-time visitors to China: payments, transport, and trains." />
-    <title>First-time China visitor guide</title>
-  </head>
-  <body>
-    <main>
-      <h1>First-time China visitor guide</h1>
-      <p>
-        Scaffold only. Stack: <strong>Astro</strong> · URL model:
-        <strong>chapter-per-page</strong> (see <code>docs/URL-STRATEGY.md</code> in this folder).
-      </p>
-    </main>
-  </body>
-</html>
+
+<BaseLayout
+  title="First-time China visitor guide — Shanghai"
+  description="Practical English guide for first-time visitors to China, first city Shanghai: payments, metro & taxis, and high-speed rail."
+>
+  <GuideNav slot="nav" currentPath={Astro.url.pathname} />
+  <article class="chapter">
+    <h1>First-time China visitor guide</h1>
+    <p>
+      <strong>First city: Shanghai.</strong> English static guide: <strong>pay → move → travel farther</strong>,
+      with one on-page branch for <strong>Shanghai</strong> local transport (metro-first vs taxi, bus
+      &amp; ride-hail). Product spec: <code>docs/DESIGN-SPEC.md</code> · URL model:{" "}
+      <code>docs/URL-STRATEGY.md</code>. Verify apps and rules at official sources before you travel.
+    </p>
+    <p>
+      <strong>Start here:</strong>
+      <a href={`${import.meta.env.BASE_URL}before-land/`}>Before you land</a> (checklist and early connectivity
+      callouts).
+    </p>
+  </article>
+</BaseLayout>

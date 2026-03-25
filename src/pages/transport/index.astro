@@ -1,0 +1,23 @@
+---
+import { getEntry, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import GuideNav from "../../components/GuideNav.astro";
+
+const entry = await getEntry("guide", "transport");
+if (!entry) {
+  throw new Error("Missing guide entry: transport");
+}
+
+const { Content } = await render(entry);
+---
+
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  lastReviewed={entry.data.lastReviewed}
+>
+  <GuideNav slot="nav" currentPath={Astro.url.pathname} />
+  <article class="chapter">
+    <Content />
+  </article>
+</BaseLayout>

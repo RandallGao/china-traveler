@@ -1,8 +1,8 @@
 # URL strategy & static site stack
 
 **Status:** Locked for v1 implementation  
-**Related spec:** `docs/superpowers/specs/2026-03-24-china-traveler-guide-design.md`  
-**Related plan:** `docs/superpowers/plans/2026-03-24-china-traveler-guide.md`
+**Related spec:** `docs/DESIGN-SPEC.md` (product source of truth)  
+**Related plan:** `docs/IMPLEMENTATION-PLAN.md` (build tasks)
 
 ---
 
@@ -53,6 +53,8 @@
 | `/appendix/tickets/` *(or `/appendix-tickets/`)* | appendix | Secondary nav; not a “core step” in the journey UI. |
 
 Exact slugs can be adjusted in implementation; **one primary URL per chapter** is the invariant.
+
+**v1 copy note:** On-the-ground examples and station names currently assume **Shanghai** as the **first city**; other cities can be added later as separate pages or a future edition without changing the URL model.
 
 ### Content ↔ build
 

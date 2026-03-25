@@ -1,0 +1,82 @@
+---
+import { getEntry, render } from "astro:content";
+
+const metro = await getEntry("partials", "b-metro-heavy");
+const general = await getEntry("partials", "b-general-transport");
+if (!metro || !general) throw new Error("Missing transport partials");
+
+const { Content: MetroContent } = await render(metro);
+const { Content: GeneralContent } = await render(general);
+---
+
+<div id="transport-branch-root" class="transport-branch">
+  <fieldset class="transport-branch-fieldset">
+    <legend>How you’ll move in Shanghai</legend>
+    <div class="transport-branch-options">
+      <label class="transport-branch-label">
+        <input type="radio" name="transport-branch" value="metro" checked />
+        Shanghai / Metro-first days
+      </label>
+      <label class="transport-branch-label">
+        <input type="radio" name="transport-branch" value="general" />
+        Shanghai · Taxis, buses &amp; ride-hail first
+      </label>
+    </div>
+  </fieldset>
+  <div class="transport-panels">
+    <div data-transport-panel="metro" class="transport-panel">
+      <MetroContent />
+    </div>
+    <div data-transport-panel="general" class="transport-panel" hidden>
+      <GeneralContent />
+    </div>
+  </div>
+</div>
+
+<script>
+  import { initTransportBranch } from "../scripts/transport-branch";
+
+  const root = document.getElementById("transport-branch-root");
+  if (root) initTransportBranch(root);
+</script>
+
+<style>
+  .transport-branch {
+    margin: 1.25rem 0;
+    padding: 1rem;
+    border: 1px solid var(--border, #e2ddd4);
+    border-radius: 6px;
+    background: #fff;
+  }
+  .transport-branch-fieldset {
+    border: none;
+    margin: 0 0 1rem;
+    padding: 0;
+  }
+  .transport-branch-fieldset legend {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .transport-branch-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .transport-branch-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+  }
+  .transport-branch-label input {
+    margin-top: 0.2rem;
+  }
+  .transport-panel :global(h2) {
+    font-size: 1.05rem;
+    margin-top: 0;
+  }
+  .transport-panel :global(h3) {
+    font-size: 0.95rem;
+  }
+</style>

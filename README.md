@@ -35,6 +35,47 @@ HTTPS password prompt: use a [Personal Access Token](https://github.com/settings
 
 See **`docs/URL-STRATEGY.md`**: **Astro** + **chapter-per-page** URLs; transport chapter uses **same-page** radio/tabs for two partials (no extra URL).
 
+## Local development
+
+```bash
+npm install
+npm run dev       # http://localhost:4321
+npm run build     # static site → dist/
+npm run check     # astro check (types + content collections)
+npm run preview   # serve dist/
+```
+
+**Content layout:** chapters in `src/content/guide/` (Markdown + `transport.mdx`); B-branch partials in `src/content/partials/`. Use the four-block heading pattern from `docs/IMPLEMENTATION-PLAN.md` (`What this helps` → `Step by step` → `If this fails` → `Official / trusted links`).
+
+**Optional gstack:** local skills under `.agents/skills/gstack/` — run `./setup --host codex` there if the headless `browse` CLI is missing.
+
+**Maps & addresses:** the guide recommends **[高德地图 (Amap)](https://www.amap.com/)** for Shanghai navigation and offline packs (see [Before you land](src/content/guide/before-land.md)).
+
+### Deploy & SEO
+
+**Environment variables**
+
+| Variable | When needed | Example |
+|----------|-------------|---------|
+| `PUBLIC_SITE_URL` | Production | `https://YOURNAME.github.io` or `https://guide.example.com` (origin only, no repo path) |
+| `PUBLIC_BASE_PATH` | GitHub **Project** Pages only | `/china-traveler/` (must match repo name, slashes as shown) |
+
+```bash
+cp .env.example .env
+# Edit .env, then:
+npm run build
+```
+
+With `PUBLIC_SITE_URL` set, you get **canonical**, **Open Graph / Twitter**, **`article:modified_time`**, **`sitemap-index.xml`**, and **`robots.txt`** (with `Sitemap:` when `site` is set). Omit both URL vars for a local-only build (relative links in dev use `base: /`).
+
+**GitHub Actions → GitHub Pages**
+
+1. Repo **Settings → Pages → Build and deployment → Source: GitHub Actions**.  
+2. Push to `main`: workflow **Deploy GitHub Pages** builds with `PUBLIC_SITE_URL=https://<owner>.github.io` and `PUBLIC_BASE_PATH=/<repo>/`.  
+3. Site URL: `https://<owner>.github.io/<repo>/`  
+
+If you use a **user site** repo (`<username>.github.io`) with content at the root, set `PUBLIC_SITE_URL` to `https://<username>.github.io` and **do not** set `PUBLIC_BASE_PATH` (or set it to `/`). For a **custom domain**, set `PUBLIC_SITE_URL` to `https://your.domain` and `PUBLIC_BASE_PATH` to `/` unless the site is in a subdirectory.
+
 ## Prerequisites
 
 - **Node.js 20+** and **npm** (npm ships with Node).
