@@ -51,3 +51,9 @@
 - **Base-path build:** `PUBLIC_SITE_URL=https://owner.github.io` + `PUBLIC_BASE_PATH=/china-traveler/` → `robots.txt` `Sitemap:` and sitemap `<loc>` include `/china-traveler/…`.
 - **npm audit:** 4 issues (esbuild/vite chain; fix forces Astro major bump) — note for later, not blocking static deploy.
 - **Content:** `connectivity.md` State Council link updated to `https://english.www.gov.cn/` (verified 200).
+
+## 2026-03-25 (Cursor skill: frontend-design)
+
+- **Source:** User draft at `~/Desktop/SKILL.md` (name `frontend-design`).
+- **Created:** `.cursor/skills/frontend-design/SKILL.md` — YAML `description` rewritten third-person + trigger terms; body structured (design thinking, guidelines, anti-patterns); omitted `license: LICENSE.txt` (file not in repo).
+- **Note:** For a **personal** copy, duplicate the folder to `~/.cursor/skills/frontend-design/`.

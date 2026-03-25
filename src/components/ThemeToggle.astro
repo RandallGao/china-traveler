@@ -1,0 +1,127 @@
+---
+---
+
+<div class="theme-toggle-wrap">
+  <span class="theme-toggle-label" id="theme-toggle-label">Theme</span>
+  <button
+    type="button"
+    class="theme-toggle"
+    id="theme-toggle-btn"
+    aria-labelledby="theme-toggle-label"
+    aria-pressed="false"
+  >
+    <span class="theme-toggle-track" aria-hidden="true">
+      <span class="theme-toggle-thumb"></span>
+    </span>
+    <span class="theme-toggle-text">
+      <span class="theme-toggle-name theme-toggle-name--light">Light</span>
+      <span class="theme-toggle-name theme-toggle-name--dark">Dark</span>
+    </span>
+  </button>
+</div>
+
+<script>
+  import { initThemeToggle } from "../scripts/theme-toggle-client";
+
+  initThemeToggle();
+</script>
+
+<style>
+  .theme-toggle-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--border, #d9cfc0);
+  }
+  .theme-toggle-label {
+    font-family: var(--font-display, "Fraunces Variable", Georgia, serif);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--muted, #5c534a);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.35rem 0.55rem 0.35rem 0.4rem;
+    border: 1px solid var(--border, #d9cfc0);
+    border-radius: 999px;
+    background: var(--card-surface, rgba(255, 255, 255, 0.55));
+    color: var(--text, #1c1814);
+    cursor: pointer;
+    font: inherit;
+    transition:
+      border-color 0.2s var(--ease-out, ease),
+      box-shadow 0.2s var(--ease-out, ease),
+      background 0.2s var(--ease-out, ease);
+  }
+  .theme-toggle:hover {
+    border-color: var(--transport-card-hover-border, rgba(26, 92, 82, 0.35));
+    background: var(--card-surface-hover, rgba(255, 255, 255, 0.9));
+  }
+  .theme-toggle:focus-visible {
+    outline: 2px solid var(--teal, #1a5c52);
+    outline-offset: 2px;
+  }
+  .theme-toggle-track {
+    position: relative;
+    width: 2.5rem;
+    height: 1.35rem;
+    border-radius: 999px;
+    background: var(--teal-muted, rgba(26, 92, 82, 0.12));
+    flex-shrink: 0;
+  }
+  .theme-toggle-thumb {
+    position: absolute;
+    top: 0.15rem;
+    left: 0.15rem;
+    width: 1.05rem;
+    height: 1.05rem;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #fff, #e8dfd0);
+    box-shadow: 0 1px 4px rgba(28, 24, 20, 0.15);
+    transition:
+      transform 0.28s var(--ease-out, ease),
+      background 0.2s ease;
+  }
+  :global(html[data-theme="dark"]) .theme-toggle-thumb {
+    transform: translateX(1.15rem);
+    background: linear-gradient(145deg, #4a4540, #2a2620);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+  }
+  .theme-toggle-text {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.35rem;
+    min-width: 5.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: var(--font-body, "Newsreader Variable", Georgia, serif);
+  }
+  .theme-toggle-name {
+    text-align: center;
+    padding: 0.15rem 0.25rem;
+    border-radius: 4px;
+    color: var(--muted, #5c534a);
+    transition: color 0.2s ease, background 0.2s ease;
+  }
+  :global(html[data-theme="light"]) .theme-toggle-name--light,
+  :global(html:not([data-theme])) .theme-toggle-name--light {
+    color: var(--accent, #b8321a);
+    background: rgba(184, 50, 26, 0.08);
+  }
+  :global(html[data-theme="dark"]) .theme-toggle-name--dark {
+    color: var(--accent, #e87362);
+    background: rgba(232, 115, 98, 0.15);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .theme-toggle-thumb {
+      transition: none;
+    }
+  }
+</style>
