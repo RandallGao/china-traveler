@@ -62,10 +62,10 @@ const ogModified =
   <body class:list={[{ "page-home": variant === "home" }]}>
     <a class="skip-link" href="#main">Skip to content</a>
     <slot name="nav" />
-    <main id="main">
+    <main id="main" tabindex="-1">
       <slot />
     </main>
-    <footer class="site-footer">
+    <footer class="site-footer" role="contentinfo">
       <p>
         <strong>Disclaimer:</strong> This guide is not legal, immigration, or financial advice.
         Procedures and apps change; always follow live app and venue rules.
@@ -78,7 +78,7 @@ const ogModified =
         --bg: #f3efe6;
         --bg-elevated: #faf7f0;
         --text: #1c1814;
-        --muted: #5c534a;
+        --muted: #4a433c;
         --accent: #b8321a;
         --accent-hover: #942818;
         --teal: #1a5c52;
@@ -111,6 +111,7 @@ const ogModified =
         --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
         --font-body: "Newsreader Variable", Georgia, "Times New Roman", serif;
         --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+        --scroll-pad-top: 6.75rem;
         color: var(--text);
         background-color: var(--bg);
         font-family: var(--font-body);
@@ -197,6 +198,14 @@ const ogModified =
       * {
         box-sizing: border-box;
       }
+      @media (prefers-reduced-motion: no-preference) {
+        html {
+          scroll-behavior: smooth;
+        }
+      }
+      html {
+        scroll-padding-top: var(--scroll-pad-top);
+      }
       body {
         margin: 0;
         min-height: 100vh;
@@ -204,6 +213,7 @@ const ogModified =
         flex-direction: column;
         background-image: var(--body-gradient);
         background-attachment: fixed;
+        touch-action: manipulation;
       }
       body::before {
         content: "";
@@ -241,6 +251,7 @@ const ogModified =
         max-width: 42rem;
         margin: 0 auto;
         padding: 1.35rem 1.35rem 3.5rem;
+        scroll-margin-top: var(--scroll-pad-top);
       }
       @media (min-width: 640px) {
         #main {
@@ -289,6 +300,17 @@ const ogModified =
       }
       .chapter {
         font-family: var(--font-body);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .chapter :is(h1, h2, h3) {
+        scroll-margin-top: calc(var(--scroll-pad-top) + 0.35rem);
+      }
+      .chapter img,
+      .chapter video,
+      .chapter svg {
+        max-width: 100%;
+        height: auto;
       }
       .chapter h1 {
         font-family: var(--font-display);

@@ -4,6 +4,13 @@ function currentTheme(root: HTMLElement): "light" | "dark" {
   return root.getAttribute("data-theme") === "dark" ? "dark" : "light";
 }
 
+function announce(mode: "light" | "dark") {
+  const el = document.getElementById("theme-announce");
+  if (el) {
+    el.textContent = mode === "dark" ? "Dark theme on" : "Light theme on";
+  }
+}
+
 function syncUi(btn: HTMLButtonElement, root: HTMLElement) {
   const dark = currentTheme(root) === "dark";
   btn.setAttribute("aria-pressed", dark ? "true" : "false");
@@ -27,6 +34,7 @@ export function initThemeToggle() {
       /* storage unavailable */
     }
     syncUi(btn, root);
+    announce(next);
   });
 
   syncUi(btn, root);

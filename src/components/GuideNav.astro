@@ -78,12 +78,23 @@ const isHome =
     line-height: 1.2;
   }
   .guide-nav-title a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
     color: var(--text, #1c1814);
     text-decoration: none;
     transition: color 0.2s var(--ease-out, ease);
   }
   .guide-nav-title a:hover {
     color: var(--accent, #b8321a);
+  }
+  .guide-nav-title a:focus-visible {
+    outline: 2px solid var(--teal, #1a5c52);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .guide-nav-title a:active {
+    opacity: 0.92;
   }
   .guide-nav-title a[aria-current="page"] {
     color: var(--accent, #b8321a);
@@ -114,8 +125,11 @@ const isHome =
     margin: 0;
   }
   .guide-nav-list a {
-    display: inline-block;
-    padding: 0.35rem 0.65rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: 0.4rem 0.85rem;
     border-radius: 999px;
     font-family: var(--font-body, "Newsreader Variable", Georgia, serif);
     font-size: 0.88rem;
@@ -127,7 +141,12 @@ const isHome =
       background 0.2s var(--ease-out, ease),
       color 0.2s var(--ease-out, ease),
       border-color 0.2s var(--ease-out, ease),
-      box-shadow 0.2s var(--ease-out, ease);
+      box-shadow 0.2s var(--ease-out, ease),
+      transform 0.15s var(--ease-out, ease);
+  }
+  .guide-nav-list a:focus-visible {
+    outline: 2px solid var(--teal, #1a5c52);
+    outline-offset: 2px;
   }
   .guide-nav-list a:hover {
     background: var(--nav-pill-hover-bg, rgba(26, 92, 82, 0.08));
@@ -143,6 +162,17 @@ const isHome =
     color: #fff;
     background: var(--nav-pill-bg-hover, linear-gradient(135deg, #942818 0%, #752010 100%));
   }
+  .guide-nav-list a:active {
+    transform: scale(0.98);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .guide-nav-list a {
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .guide-nav-list a:active {
+      transform: none;
+    }
+  }
   .nav-secondary {
     flex-basis: 100%;
     margin-top: 0.35rem;
@@ -151,6 +181,7 @@ const isHome =
   }
   .nav-secondary a {
     font-size: 0.82rem;
+    min-height: 2.5rem;
     color: var(--nav-secondary, #6e655b);
   }
   .nav-secondary a:hover {

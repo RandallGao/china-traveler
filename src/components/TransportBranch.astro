@@ -99,7 +99,9 @@ const { Content: GeneralContent } = await render(general);
     clip: rect(0, 0, 0, 0);
   }
   .transport-branch-card {
-    display: block;
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
     padding: 0.65rem 0.85rem;
     border-radius: 8px;
     border: 2px solid var(--border, #d9cfc0);
@@ -107,7 +109,8 @@ const { Content: GeneralContent } = await render(general);
     transition:
       border-color 0.2s var(--ease-out, ease),
       background 0.2s var(--ease-out, ease),
-      box-shadow 0.2s var(--ease-out, ease);
+      box-shadow 0.2s var(--ease-out, ease),
+      transform 0.15s var(--ease-out, ease);
   }
   .transport-branch-label:hover .transport-branch-card {
     border-color: var(--transport-card-hover-border, rgba(26, 92, 82, 0.35));
@@ -124,6 +127,17 @@ const { Content: GeneralContent } = await render(general);
       linear-gradient(145deg, #fff 0%, rgba(184, 50, 26, 0.06) 100%)
     );
     box-shadow: var(--card-checked-ring, 0 0 0 1px rgba(184, 50, 26, 0.15));
+  }
+  .transport-branch-label:active .transport-branch-card {
+    transform: scale(0.99);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .transport-branch-card {
+      transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    }
+    .transport-branch-label:active .transport-branch-card {
+      transform: none;
+    }
   }
   .transport-branch-label-text {
     font-family: var(--font-body, "Newsreader Variable", Georgia, serif);
