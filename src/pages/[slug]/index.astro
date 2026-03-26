@@ -2,6 +2,7 @@
 import { getCollection, getEntry, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import GuideNav from "../../components/GuideNav.astro";
+import StageBanner from "../../components/StageBanner.astro";
 
 export async function getStaticPaths() {
   const entries = await getCollection("guide");
@@ -17,6 +18,54 @@ if (!entry) {
 }
 
 const { Content } = await render(entry);
+const base = import.meta.env.BASE_URL;
+const stageMeta: Record<
+  string,
+  { stage: "Before you land" | "After landing" | "First 72 hours"; status: "Locked" | "In progress" | "Unlocked"; capability: string; nextLabel: string; nextHref: string }
+> = {
+  "before-land": {
+    stage: "Before you land",
+    status: "Unlocked",
+    capability: "Arrival baseline ready",
+    nextLabel: "Unlock payment module",
+    nextHref: `${base}payments/`,
+  },
+  payments: {
+    stage: "Before you land",
+    status: "In progress",
+    capability: "Payment setup",
+    nextLabel: "Activate connectivity",
+    nextHref: `${base}connectivity/`,
+  },
+  connectivity: {
+    stage: "After landing",
+    status: "In progress",
+    capability: "Internet + verification",
+    nextLabel: "Run local mobility",
+    nextHref: `${base}transport/`,
+  },
+  rail: {
+    stage: "First 72 hours",
+    status: "Locked",
+    capability: "Intercity travel optional",
+    nextLabel: "Finish mobility first",
+    nextHref: `${base}transport/`,
+  },
+  "appendix-tickets": {
+    stage: "First 72 hours",
+    status: "Locked",
+    capability: "Ticket ops support",
+    nextLabel: "Return to onboarding board",
+    nextHref: `${base}onboarding/`,
+  },
+};
+const meta = stageMeta[entry.slug] ?? {
+  stage: "After landing" as const,
+  status: "In progress" as const,
+  capability: "Core setup",
+  nextLabel: "Open onboarding board",
+  nextHref: `${base}onboarding/`,
+};
 ---
 
 <BaseLayout
@@ -26,6 +75,13 @@ const { Content } = await render(entry);
 >
   <GuideNav slot="nav" currentPath={Astro.url.pathname} />
   <article class="chapter">
+    <StageBanner
+      stage={meta.stage}
+      status={meta.status}
+      capability={meta.capability}
+      nextLabel={meta.nextLabel}
+      nextHref={meta.nextHref}
+    />
     <Content />
   </article>
 </BaseLayout>

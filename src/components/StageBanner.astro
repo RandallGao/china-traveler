@@ -1,0 +1,56 @@
+---
+interface Props {
+  stage: "Before you land" | "After landing" | "First 72 hours";
+  status: "Locked" | "In progress" | "Unlocked";
+  capability: string;
+  nextLabel: string;
+  nextHref: string;
+}
+
+const { stage, status, capability, nextLabel, nextHref } = Astro.props;
+---
+
+<aside class="stage-banner" aria-label="Progress status">
+  <p class="stage-banner-kicker">ONBOARDING STATUS</p>
+  <div class="stage-banner-grid">
+    <p><strong>Stage:</strong> {stage}</p>
+    <p><strong>Status:</strong> {status}</p>
+    <p><strong>Capability:</strong> {capability}</p>
+  </div>
+  <p class="stage-banner-next">
+    <strong>Next action:</strong> <a href={nextHref}>{nextLabel}</a>
+  </p>
+</aside>
+
+<style>
+  .stage-banner {
+    margin: 0 0 1.2rem;
+    border: 2px solid var(--text);
+    background: var(--bg-elevated);
+    padding: 0.8rem 0.9rem;
+    box-shadow: 4px 4px 0 color-mix(in srgb, var(--text) 80%, transparent);
+  }
+  .stage-banner-kicker {
+    margin: 0 0 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .stage-banner-grid {
+    display: grid;
+    gap: 0.3rem;
+  }
+  .stage-banner-grid p,
+  .stage-banner-next {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  .stage-banner-next {
+    margin-top: 0.45rem;
+  }
+  .stage-banner a {
+    text-underline-offset: 0.16em;
+  }
+</style>
