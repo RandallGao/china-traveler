@@ -1,0 +1,446 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="China Activation — First 72h Onboarding"
+  description="Task-based onboarding for foreign visitors: activate payments, mobility, and connectivity in China within 72 hours."
+>
+  <section class="activation-shell" aria-label="China first 72 hours onboarding">
+    <header class="hero">
+      <p class="kicker">SYSTEM BOOT · CHINA ARRIVAL</p>
+      <h1>Activate Your First 72 Hours</h1>
+      <p class="hero-copy">
+        This is a progression flow, not a travel blog. Complete modules to unlock real capability:
+        <strong> pay, move, connect</strong>.
+      </p>
+      <div class="capability-meter" aria-live="polite">
+        <p>
+          Capability score
+          <span id="capability-percent">0%</span>
+        </p>
+        <div class="meter-track" role="presentation">
+          <div id="capability-fill" class="meter-fill"></div>
+        </div>
+        <p class="meter-note">Goal: feel capable (सक्षम) before day 3.</p>
+      </div>
+    </header>
+
+    <section class="stage">
+      <h2>
+        <span>Stage 1</span>
+        Before You Land
+      </h2>
+      <div class="module-grid">
+        <article class="module-card" data-module-id="passport" data-stage="before" data-title="Entry Essentials">
+          <p class="module-state" data-state-label>UNLOCKED</p>
+          <h3>Lock Entry Essentials</h3>
+          <p>Passport validity, entry rule check, and your first-night address in Chinese characters.</p>
+          <button class="module-btn" data-action-btn type="button">Reset Module</button>
+        </article>
+
+        <article class="module-card" data-module-id="wallet" data-stage="before" data-title="Mobile Payment">
+          <p class="module-state" data-state-label>IN PROGRESS</p>
+          <h3>Unlock Payment</h3>
+          <p>Install Alipay or WeChat from official stores and finish one successful setup path.</p>
+          <button class="module-btn" data-action-btn type="button">Complete Module</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="stage">
+      <h2>
+        <span>Stage 2</span>
+        After Landing
+      </h2>
+      <div class="module-grid">
+        <article
+          class="module-card"
+          data-module-id="connectivity"
+          data-stage="landing"
+          data-title="Internet Access"
+        >
+          <p class="module-state" data-state-label>LOCKED</p>
+          <h3>Activate Connectivity</h3>
+          <p>Enable roaming/eSIM/local SIM so maps, SMS verification, and ride-hail work reliably.</p>
+          <button class="module-btn" data-action-btn type="button">Locked · Complete prerequisite</button>
+        </article>
+
+        <article
+          class="module-card"
+          data-module-id="arrival-mobility"
+          data-stage="landing"
+          data-title="Arrival Mobility"
+        >
+          <p class="module-state" data-state-label>LOCKED</p>
+          <h3>Mobility Activated</h3>
+          <p>Run one airport-to-hotel route using metro or ride-hail without asking for rescue.</p>
+          <button class="module-btn" data-action-btn type="button">Locked · Complete prerequisite</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="stage">
+      <h2>
+        <span>Stage 3</span>
+        First 72 Hours
+      </h2>
+      <div class="module-grid">
+        <article class="module-card" data-module-id="metro" data-stage="72h" data-title="Local Transit">
+          <p class="module-state" data-state-label>LOCKED</p>
+          <h3>Run Metro / Local Transport</h3>
+          <p>Finish two city trips with QR or backup method. You should no longer feel uncertain.</p>
+          <button class="module-btn" data-action-btn type="button">Locked · Complete prerequisite</button>
+        </article>
+
+        <article class="module-card optional" data-module-id="rail" data-stage="72h" data-title="HSR Optional">
+          <p class="module-state" data-state-label>LOCKED</p>
+          <h3>Ready for High-Speed Rail</h3>
+          <p>Optional unlock: set up 12306 flow and validate one intercity itinerary.</p>
+          <button class="module-btn" data-action-btn type="button">Locked · Complete prerequisite</button>
+        </article>
+      </div>
+    </section>
+  </section>
+
+  <script>
+    type ModuleState = "locked" | "in_progress" | "unlocked";
+    type StateMap = Record<string, ModuleState>;
+
+    const STORAGE_KEY = "china-activation-v1";
+    const prereq: Record<string, string[]> = {
+      wallet: ["passport"],
+      connectivity: ["wallet"],
+      "arrival-mobility": ["connectivity"],
+      metro: ["arrival-mobility"],
+      rail: ["metro"],
+    };
+
+    const defaultStates: StateMap = {
+      passport: "unlocked",
+      wallet: "in_progress",
+      connectivity: "locked",
+      "arrival-mobility": "locked",
+      metro: "locked",
+      rail: "locked",
+    };
+
+    const cards = Array.from(document.querySelectorAll<HTMLElement>("[data-module-id]"));
+    const percentEl = document.getElementById("capability-percent");
+    const fillEl = document.getElementById("capability-fill");
+
+    const load = (): StateMap => {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return { ...defaultStates };
+        const parsed = JSON.parse(raw);
+        return { ...defaultStates, ...(parsed as StateMap) };
+      } catch {
+        return { ...defaultStates };
+      }
+    };
+
+    const save = (state: StateMap): void => {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    };
+
+    const transitionLabel: Record<ModuleState, string> = {
+      locked: "Locked · Complete prerequisite",
+      in_progress: "Complete Module",
+      unlocked: "Reset Module",
+    };
+
+    const labelText: Record<ModuleState, string> = {
+      locked: "LOCKED",
+      in_progress: "IN PROGRESS",
+      unlocked: "UNLOCKED",
+    };
+
+    const applyLocks = (state: StateMap): StateMap => {
+      const next = { ...state };
+      for (const [id, reqs] of Object.entries(prereq)) {
+        const ready = reqs.every((r) => next[r] === "unlocked");
+        if (!ready) {
+          next[id] = "locked";
+        } else if (next[id] === "locked") {
+          next[id] = "in_progress";
+        }
+      }
+      return next;
+    };
+
+    const updateUi = (state: StateMap): void => {
+      const stable = applyLocks(state);
+      save(stable);
+
+      cards.forEach((card) => {
+        const id = card.dataset.moduleId!;
+        const moduleState = stable[id] ?? "locked";
+        card.dataset.state = moduleState;
+
+        const stateLabel = card.querySelector<HTMLElement>("[data-state-label]");
+        const actionBtn = card.querySelector<HTMLButtonElement>("[data-action-btn]");
+        if (!stateLabel || !actionBtn) return;
+
+        stateLabel.textContent = labelText[moduleState];
+        actionBtn.textContent = transitionLabel[moduleState];
+        actionBtn.disabled = moduleState === "locked";
+        actionBtn.setAttribute("aria-disabled", String(moduleState === "locked"));
+      });
+
+      const total = cards.length;
+      const unlocked = Object.values(stable).filter((v) => v === "unlocked").length;
+      const pct = Math.round((unlocked / total) * 100);
+
+      if (percentEl) percentEl.textContent = `${pct}%`;
+      if (fillEl) fillEl.style.width = `${pct}%`;
+    };
+
+    let current = load();
+    updateUi(current);
+
+    cards.forEach((card) => {
+      const id = card.dataset.moduleId!;
+      const actionBtn = card.querySelector<HTMLButtonElement>("[data-action-btn]");
+      if (!actionBtn) return;
+
+      actionBtn.addEventListener("click", () => {
+        const now = current[id] ?? "locked";
+        if (now === "in_progress") current[id] = "unlocked";
+        else if (now === "unlocked") current[id] = "in_progress";
+        current = applyLocks(current);
+        updateUi(current);
+      });
+    });
+  </script>
+
+  <style>
+    .activation-shell {
+      --ink: #111111;
+      --paper: #f6f1e6;
+      --module-bg: #fff5dc;
+      --accent: #f4c400;
+      --danger: #e33b2f;
+      --ok: #32c271;
+      --progress: #2f7cff;
+      --shadow: 6px 6px 0 #111;
+      margin-top: 0.25rem;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .hero {
+      border: 3px solid var(--ink);
+      background: var(--accent);
+      color: #000;
+      box-shadow: var(--shadow);
+      padding: 1rem;
+    }
+
+    .kicker {
+      margin: 0 0 0.4rem;
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(1.7rem, 9vw, 2.55rem);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+
+    .hero-copy {
+      margin: 0.7rem 0 0;
+      font-size: 0.98rem;
+      max-width: 28rem;
+      font-weight: 600;
+    }
+
+    .capability-meter {
+      margin-top: 0.95rem;
+      border: 2px solid var(--ink);
+      background: var(--paper);
+      padding: 0.6rem 0.65rem;
+    }
+
+    .capability-meter p {
+      margin: 0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    #capability-percent {
+      min-width: 3ch;
+      text-align: right;
+    }
+
+    .meter-track {
+      height: 0.75rem;
+      border: 2px solid var(--ink);
+      margin-top: 0.45rem;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .meter-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--progress);
+      transition: width 180ms ease-out;
+    }
+
+    .meter-note {
+      margin-top: 0.45rem !important;
+      font-size: 0.72rem !important;
+      letter-spacing: 0.02em !important;
+      text-transform: none !important;
+      justify-content: flex-start !important;
+      color: #1f1f1f;
+      font-weight: 700 !important;
+    }
+
+    .stage {
+      border: 2px solid var(--ink);
+      background: #fefefe;
+      padding: 0.9rem;
+      box-shadow: 4px 4px 0 #111;
+    }
+
+    .stage h2 {
+      margin: 0 0 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.16rem;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      font-size: 1.35rem;
+      line-height: 0.98;
+    }
+
+    .stage h2 span {
+      font-size: 0.7rem;
+      letter-spacing: 0.09em;
+      font-weight: 800;
+      color: #444;
+    }
+
+    .module-grid {
+      display: grid;
+      gap: 0.72rem;
+    }
+
+    .module-card {
+      border: 2px solid var(--ink);
+      background: var(--module-bg);
+      padding: 0.72rem;
+      box-shadow: 3px 3px 0 #111;
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    .module-card h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+    }
+
+    .module-card p {
+      margin: 0;
+      font-size: 0.92rem;
+    }
+
+    .module-card .module-state {
+      display: inline-block;
+      width: fit-content;
+      font-size: 0.68rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.4rem;
+      border: 2px solid var(--ink);
+      background: #fff;
+    }
+
+    .module-card[data-state="locked"] .module-state {
+      background: #dddddd;
+      color: #333;
+    }
+
+    .module-card[data-state="in_progress"] .module-state {
+      background: var(--accent);
+      color: #111;
+    }
+
+    .module-card[data-state="unlocked"] .module-state {
+      background: var(--ok);
+      color: #071b0f;
+    }
+
+    .module-btn {
+      border: 2px solid var(--ink);
+      background: #fff;
+      color: #000;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      min-height: 2.7rem;
+      padding: 0.35rem 0.65rem;
+      cursor: pointer;
+      transition: transform 120ms ease-out, background 120ms ease-out;
+      touch-action: manipulation;
+    }
+
+    .module-btn:hover {
+      transform: translate(-1px, -1px);
+      background: #f7f7f7;
+    }
+
+    .module-btn:active {
+      transform: translate(1px, 1px);
+    }
+
+    .module-btn:focus-visible {
+      outline: 3px solid var(--progress);
+      outline-offset: 2px;
+    }
+
+    .module-btn[disabled] {
+      cursor: not-allowed;
+      background: #e3e3e3;
+      color: #545454;
+      transform: none;
+      opacity: 1;
+    }
+
+    .module-card.optional::after {
+      content: "OPTIONAL";
+      justify-self: end;
+      font-size: 0.63rem;
+      border: 2px solid var(--ink);
+      background: #fff;
+      padding: 0.1rem 0.35rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+    }
+
+    @media (min-width: 720px) {
+      .activation-shell {
+        gap: 1.2rem;
+      }
+      .module-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</BaseLayout>
