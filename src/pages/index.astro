@@ -22,5 +22,55 @@ import GuideNav from "../components/GuideNav.astro";
       <a href={`${import.meta.env.BASE_URL}before-land/`}>Before you land</a> (checklist and early connectivity
       callouts).
     </p>
+    <section class="activation-callout" aria-label="Task onboarding entry">
+      <p class="activation-kicker">NEW · TASK ONBOARDING</p>
+      <h2>Use the 72-hour activation flow</h2>
+      <p>
+        Not a guide to read end-to-end. This is a progression board that unlocks capability step by step:
+        payments, mobility, and connectivity.
+      </p>
+      <p>
+        <a class="activation-link" href={`${import.meta.env.BASE_URL}onboarding/`}>Open onboarding system</a>
+      </p>
+    </section>
   </article>
+  <style>
+    .activation-callout {
+      margin-top: 1.6rem;
+      padding: 0.9rem 1rem 1rem;
+      border: 2px solid var(--text);
+      background: var(--bg-elevated);
+      box-shadow: 4px 4px 0 color-mix(in srgb, var(--text) 80%, transparent);
+    }
+    .activation-kicker {
+      margin: 0 0 0.35rem;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .activation-callout h2 {
+      margin: 0 0 0.45rem;
+      font-size: 1.22rem;
+      line-height: 1.1;
+    }
+    .activation-callout p {
+      margin: 0.4rem 0 0;
+    }
+    .activation-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.6rem;
+      padding: 0.25rem 0.9rem;
+      border: 2px solid var(--text);
+      text-decoration: none;
+      font-weight: 700;
+      background: color-mix(in srgb, var(--accent) 12%, var(--bg-elevated));
+    }
+    .activation-link:hover {
+      background: color-mix(in srgb, var(--accent) 22%, var(--bg-elevated));
+    }
+  </style>
 </BaseLayout>
